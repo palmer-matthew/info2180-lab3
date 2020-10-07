@@ -1,7 +1,5 @@
 "use strict";
 
-
-
 //EXERCISE ONE
 
 function assign_square_class(){
@@ -37,11 +35,38 @@ function assign_player_values(){
     array.forEach((element, index) => element.onclick = function(){click(element,index);});
 }
 
+//EXERCISE THREE
+function hover(object,is){
+
+    try{
+        if(is){
+            object.classList.add("hover");
+        }else{
+            object.classList.remove("hover"); 
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+
+}
+
+function assign_hover(){
+    let array = document.querySelectorAll(".square");
+    array.forEach((element, index) => { 
+        element.onmouseover = function(){hover(element,true);};
+        element.onmouseout = function(){hover(element,false);};
+    });
+}
+
+//MAIN [SOMEWHAT]
+
 document.addEventListener(
     'DOMContentLoaded', 
     (event) => {
         assign_square_class();
         assign_player_values();
+        assign_hover();
     }
 );
 
