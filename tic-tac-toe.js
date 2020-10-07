@@ -15,7 +15,7 @@ function assign_square_class(){
 
 let game_state = ['-1','-1','-1','-1','-1','-1','-1','-1','-1'];
 
-function click(object,pos, array){
+function click(object,pos){
     try{
         if(game_state[pos] == "-1" || game_state[pos] == "X"){
             object.innerHTML = "<p>O</p>";
@@ -33,8 +33,8 @@ function click(object,pos, array){
 }
 
 function assign_player_values(){
-    let globalarray = document.querySelectorAll(".square");
-    globalarray.forEach((element, index) => element.onclick = function(){click(element,index,globalarray);});
+    let array = document.querySelectorAll(".square");
+    array.forEach((element, index) => element.onclick = function(){click(element,index);});
 }
 
 document.addEventListener(
@@ -45,9 +45,4 @@ document.addEventListener(
     }
 );
 
-
-
-// window.addEventListener("load", (event) => {
-//     l
-// })
 
