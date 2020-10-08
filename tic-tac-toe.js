@@ -9,20 +9,25 @@ function assign_square_class(){
     }
 }
 
-//EXERCISE TWO
+//EXERCISE TWO plus SIX
 
 let game_state = ['-1','-1','-1','-1','-1','-1','-1','-1','-1'];
+let last_played = "-1";
 
 function click(object,pos){
     try{
-        if(game_state[pos] == "-1" || game_state[pos] == "X"){
-            object.innerHTML = "<p>O</p>";
-            object.className = "square O";
-            game_state[pos] = "O";
-        }else{
-            object.innerHTML = "<p>X</p>";
-            object.className = "square X";
-            game_state[pos] = "X";
+        if(game_state[pos] == "-1"){ 
+            if(last_played == "X"){
+                object.innerHTML = "<p>O</p>";
+                object.className = "square O";
+                game_state[pos] = "O";
+                last_played = "O";
+            }else{
+                object.innerHTML = "<p>X</p>";
+                object.className = "square X";
+                game_state[pos] = "X";
+                last_played = "X";
+            }
         }
     }catch(e){
         console.log(e);
@@ -115,6 +120,7 @@ function revert(){
     status_div.textContent = "Move your mouse over a square and click to play an X or an O.";
     status_div.className = "";
     winner = null;
+    last_played = "-1";
 }
 
 function reset(){
