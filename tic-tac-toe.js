@@ -1,30 +1,30 @@
 "use strict";
 
-//EXERCISE ONE
-
-function assign_square_class(){
-    let array = document.getElementById("board").getElementsByTagName("div");
-    for (var n = 0; n < array.length; n++) {
-        array[n].className = "square";
-    }
-}
-
-//EXERCISE TWO plus SIX
-
+//Global Variables
 let game_state = ['-1','-1','-1','-1','-1','-1','-1','-1','-1'];
 let last_played = "-1";
+let game_over = false;
+const win_event = new Event('win');
+let winner;
 
+//Helper Functions
 function click(object,pos){
     try{
-        if(game_state[pos] == "-1"){ 
+        if(game_state[pos] == "-1" && !game_over){ 
             if(last_played == "X"){
                 object.innerHTML = "<p>O</p>";
-                object.className = "square O";
+                object.classList.remove("X");
+                object.classList.add("O");
                 game_state[pos] = "O";
                 last_played = "O";
             }else{
                 object.innerHTML = "<p>X</p>";
-                object.className = "square X";
+                if(last_played == "-1"){
+                    object.classList.add("X");
+                }else{
+                    object.classList.remove("O");
+                    object.classList.add("X");
+                }
                 game_state[pos] = "X";
                 last_played = "X";
             }
@@ -35,19 +35,13 @@ function click(object,pos){
     check_winner(object);
 }
 
-function assign_player_values(){
-    let array = document.querySelectorAll(".square");
-    array.forEach((element, index) => {
-        element.onclick = function(){click(element,index);};
-        element.addEventListener('win', function(){
-            let status_div = document.getElementById("status");
-            status_div.textContent = "Congratulations! " + winner + " is the winner.";
-            status_div.className = "you-won";
-        })
-    });
+function changestatus(){
+    let status_div = document.getElementById("status");
+    status_div.textContent = "Congratulations! " + winner + " is the winner.";
+    status_div.className = "you-won";
+    game_over = true;
 }
 
-//EXERCISE THREE
 function hover(object,is){
 
     try{
@@ -62,18 +56,6 @@ function hover(object,is){
     }
 
 }
-
-function assign_hover(){
-    let array = document.querySelectorAll(".square");
-    array.forEach((element, index) => { 
-        element.onmouseover = function(){hover(element,true);};
-        element.onmouseout = function(){hover(element,false);};
-    });
-}
-
-//EXERCISE FOUR
-const win_event = new Event('win');
-let winner;
 
 function check_winner(object){
     for(var n = 0; n < 9; n+=3){
@@ -108,7 +90,6 @@ function check_winner(object){
     
 }
 
-// EXERCISE FIVE
 function revert(){
     let array = document.querySelectorAll(".square");
     array.forEach((element, index) => { 
@@ -121,23 +102,20 @@ function revert(){
     status_div.className = "";
     winner = null;
     last_played = "-1";
+    game_over = false;
 }
 
-function reset(){
+function main(){
+    let array = document.getElementById("board").querySelectorAll("div");
+    array.forEach((element,index) => {
+        element.className = "square";
+        element.onclick = function(){click(element,index);};
+        element.addEventListener('win', changestatus);
+        element.onmouseover = function(){hover(element,true);};
+        element.onmouseout = function(){hover(element,false);};
+    });
     let button = document.querySelector(".btn");
     button.onclick = function(){revert()};
 }
 
-//MAIN [SOMEWHAT]
-
-document.addEventListener(
-    'DOMContentLoaded', 
-    (event) => {
-        assign_square_class();
-        assign_player_values();
-        assign_hover();
-        reset();
-    }
-);
-
-
+document.addEventListener('DOMContentLoaded', main);
