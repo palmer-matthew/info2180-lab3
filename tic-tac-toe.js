@@ -102,6 +102,26 @@ function check_winner(object){
     }
     
 }
+
+// EXERCISE FIVE
+function revert(){
+    let array = document.querySelectorAll(".square");
+    array.forEach((element, index) => { 
+        element.innerHTML = "";
+        element.className = "square";
+        game_state[index] = "-1";
+    });
+    let status_div = document.getElementById("status");
+    status_div.textContent = "Move your mouse over a square and click to play an X or an O.";
+    status_div.className = "";
+    winner = null;
+}
+
+function reset(){
+    let button = document.querySelector(".btn");
+    button.onclick = function(){revert()};
+}
+
 //MAIN [SOMEWHAT]
 
 document.addEventListener(
@@ -110,6 +130,7 @@ document.addEventListener(
         assign_square_class();
         assign_player_values();
         assign_hover();
+        reset();
     }
 );
 
