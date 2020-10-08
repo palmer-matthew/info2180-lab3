@@ -24,15 +24,22 @@ function click(object,pos){
             object.className = "square X";
             game_state[pos] = "X";
         }
-
     }catch(e){
         console.log(e);
     }
+    check_winner(object);
 }
 
 function assign_player_values(){
     let array = document.querySelectorAll(".square");
-    array.forEach((element, index) => element.onclick = function(){click(element,index);});
+    array.forEach((element, index) => {
+        element.onclick = function(){click(element,index);};
+        element.addEventListener('win', function(){
+            let status_div = document.getElementById("status");
+            status_div.textContent = "Congratulations! " + winner + " is the winner.";
+            status_div.className = "you-won";
+        })
+    });
 }
 
 //EXERCISE THREE
@@ -59,6 +66,42 @@ function assign_hover(){
     });
 }
 
+//EXERCISE FOUR
+const win_event = new Event('win');
+let winner;
+
+function check_winner(object){
+    for(var n = 0; n < 9; n+=3){
+        if(game_state[n] == game_state[n+1] && game_state[n+1] == game_state[n+2] && game_state[n] == game_state[n+2]){
+            if("-1" != game_state[n]){
+                winner = game_state[n];
+                object.dispatchEvent(win_event);
+            }
+        }
+    }
+
+    for(var n = 0; n <=2; n++){
+        if(game_state[n] == game_state[n+3] && game_state[n+3] == game_state[n+6] && game_state[n] == game_state[n+6]){
+            if("-1" != game_state[n]){
+                winner = game_state[n];
+                object.dispatchEvent(win_event);
+            }
+        }
+    }
+
+    if(game_state[0] == game_state[4] && game_state[4] == game_state[8] && game_state[0] == game_state[8]){
+        if("-1" != game_state[0]){
+            winner = game_state[0];
+            object.dispatchEvent(win_event);
+        }
+    }else if(game_state[2] == game_state[4] && game_state[4] == game_state[6] && game_state[2] == game_state[6]){
+        if("-1" != game_state[2]){
+            winner = game_state[2];
+            object.dispatchEvent(win_event);
+        }
+    }
+    
+}
 //MAIN [SOMEWHAT]
 
 document.addEventListener(
