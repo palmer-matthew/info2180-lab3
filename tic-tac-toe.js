@@ -13,18 +13,12 @@ function click(object,pos){
         if(game_state[pos] == "-1" && !game_over){ 
             if(last_played == "X"){
                 object.innerHTML = "<p>O</p>";
-                object.classList.remove("X");
                 object.classList.add("O");
                 game_state[pos] = "O";
                 last_played = "O";
             }else{
                 object.innerHTML = "<p>X</p>";
-                if(last_played == "-1"){
-                    object.classList.add("X");
-                }else{
-                    object.classList.remove("O");
-                    object.classList.add("X");
-                }
+                object.classList.add("X");
                 game_state[pos] = "X";
                 last_played = "X";
             }
