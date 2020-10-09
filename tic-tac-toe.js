@@ -26,7 +26,7 @@ function click(object,pos){
     }catch(e){
         console.log(e);
     }
-    check_winner(object);
+    let nothing = check_winner(object);
 }
 
 function changestatus(){
@@ -56,7 +56,7 @@ function check_winner(object){
         if(game_state[n] == game_state[n+1] && game_state[n+1] == game_state[n+2] && game_state[n] == game_state[n+2]){
             if("-1" != game_state[n]){
                 winner = game_state[n];
-                object.dispatchEvent(win_event);
+                return object.dispatchEvent(win_event);
             }
         }
     }
@@ -65,7 +65,7 @@ function check_winner(object){
         if(game_state[n] == game_state[n+3] && game_state[n+3] == game_state[n+6] && game_state[n] == game_state[n+6]){
             if("-1" != game_state[n]){
                 winner = game_state[n];
-                object.dispatchEvent(win_event);
+                return object.dispatchEvent(win_event);
             }
         }
     }
@@ -73,15 +73,30 @@ function check_winner(object){
     if(game_state[0] == game_state[4] && game_state[4] == game_state[8] && game_state[0] == game_state[8]){
         if("-1" != game_state[0]){
             winner = game_state[0];
-            object.dispatchEvent(win_event);
+            return object.dispatchEvent(win_event);
         }
     }else if(game_state[2] == game_state[4] && game_state[4] == game_state[6] && game_state[2] == game_state[6]){
         if("-1" != game_state[2]){
             winner = game_state[2];
-            object.dispatchEvent(win_event);
+            return object.dispatchEvent(win_event);
         }
     }
+
+    let nowinner = true;
     
+    for(var n = 0; n < 9;n++){
+        if(game_state[n] == "-1"){
+            nowinner = false;
+            break;
+        }
+    }
+
+    if(nowinner){
+        let status_div = document.getElementById("status");
+        status_div.textContent = "Looks like it was even. Try Again!";
+        game_over = true;
+        return null;
+    }
 }
 
 function revert(){
